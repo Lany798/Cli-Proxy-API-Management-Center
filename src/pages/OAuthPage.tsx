@@ -68,9 +68,6 @@ interface KiroTokenImportState {
 
 interface KiroOAuthState {
   method?: 'builder-id' | 'idc';
-  status?: 'idle' | 'waiting' | 'success' | 'error';
-  error?: string;
-  polling?: boolean;
   // IDC specific
   startUrl?: string;
   region?: string;
@@ -109,17 +106,12 @@ export function OAuthPage() {
     loading: false
   });
   const [kiroOAuth, setKiroOAuth] = useState<KiroOAuthState>({});
-  const kiroPollingRef = useRef<number | null>(null);
   const timers = useRef<Record<string, number>>({});
   const vertexFileInputRef = useRef<HTMLInputElement | null>(null);
 
   const clearTimers = useCallback(() => {
     Object.values(timers.current).forEach((timer) => window.clearInterval(timer));
     timers.current = {};
-    if (kiroPollingRef.current) {
-      window.clearInterval(kiroPollingRef.current);
-      kiroPollingRef.current = null;
-    }
   }, []);
 
   useEffect(() => {
@@ -378,27 +370,13 @@ export function OAuthPage() {
     }
   };
 
-  // Kiro OAuth - Start Builder ID or IDC authentication
-  const startKiroOAuth = (method: 'builder-id' | 'idc') => {
-    // Clear previous polling
-    if (kiroPollingRef.current) {
-      window.clearInterval(kiroPollingRef.current);
-      kiroPollingRef.current = null;
-    }
-
+  // Kiro OAuth - Open Builder ID or IDC authentication page
+  const openKiroOAuth = (method: 'builder-id' | 'idc') => {
     // For IDC, validate startUrl
     if (method === 'idc' && !kiroOAuth.startUrl?.trim()) {
       showNotification(t('auth_login.kiro_idc_start_url_required'), 'warning');
       return;
     }
-
-    setKiroOAuth((prev) => ({
-      ...prev,
-      method,
-      status: 'waiting',
-      polling: true,
-      error: undefined
-    }));
 
     // Build URL for the OAuth start page
     let url = `/v0/oauth/kiro/start?method=${method}`;
@@ -409,83 +387,9 @@ export function OAuthPage() {
       }
     }
 
-    // Open in new window
-    const authWindow = window.open(url, '_blank', 'noopener,noreferrer,width=600,height=700');
-
-    // Start polling for status using message event from the auth window
-    // Since we can't get the stateID directly, we'll poll the window status
-    let pollCount = 0;
-    const maxPolls = 120; // 10 minutes max (5 second intervals)
-
-    kiroPollingRef.current = window.setInterval(() => {
-      pollCount++;
-
-      // Check if window was closed
-      if (authWindow?.closed) {
-        if (kiroPollingRef.current) {
-          window.clearInterval(kiroPollingRef.current);
-          kiroPollingRef.current = null;
-        }
-        // If still waiting, mark as cancelled
-        setKiroOAuth((prev) => {
-          if (prev.status === 'waiting') {
-            return { ...prev, status: 'idle', polling: false };
-          }
-          return prev;
-        });
-        return;
-      }
-
-      // Timeout after max polls
-      if (pollCount >= maxPolls) {
-        if (kiroPollingRef.current) {
-          window.clearInterval(kiroPollingRef.current);
-          kiroPollingRef.current = null;
-        }
-        setKiroOAuth((prev) => ({
-          ...prev,
-          status: 'error',
-          polling: false,
-          error: t('auth_login.kiro_oauth_timeout')
-        }));
-        showNotification(t('auth_login.kiro_oauth_timeout'), 'error');
-      }
-    }, 5000);
+    // Open in new tab
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
-
-  // Listen for message from auth window
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      // Verify origin if needed
-      if (event.data?.type === 'kiro-oauth-success') {
-        if (kiroPollingRef.current) {
-          window.clearInterval(kiroPollingRef.current);
-          kiroPollingRef.current = null;
-        }
-        setKiroOAuth((prev) => ({
-          ...prev,
-          status: 'success',
-          polling: false
-        }));
-        showNotification(t('auth_login.kiro_oauth_success'), 'success');
-      } else if (event.data?.type === 'kiro-oauth-error') {
-        if (kiroPollingRef.current) {
-          window.clearInterval(kiroPollingRef.current);
-          kiroPollingRef.current = null;
-        }
-        setKiroOAuth((prev) => ({
-          ...prev,
-          status: 'error',
-          polling: false,
-          error: event.data?.error || t('auth_login.kiro_oauth_failed')
-        }));
-        showNotification(`${t('auth_login.kiro_oauth_failed')}: ${event.data?.error || ''}`, 'error');
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, [showNotification, t]);
 
   return (
     <div className={styles.container}>
@@ -770,27 +674,12 @@ export function OAuthPage() {
         >
           <div className="hint">{t('auth_login.kiro_oauth_hint')}</div>
 
-          {/* OAuth 状态显示 */}
-          {kiroOAuth.status && kiroOAuth.status !== 'idle' && (
-            <div className={`status-badge ${kiroOAuth.status === 'success' ? 'success' : kiroOAuth.status === 'error' ? 'error' : ''}`} style={{ marginTop: 12 }}>
-              {kiroOAuth.status === 'success'
-                ? t('auth_login.kiro_oauth_success')
-                : kiroOAuth.status === 'error'
-                  ? `${t('auth_login.kiro_oauth_failed')}: ${kiroOAuth.error || ''}`
-                  : t('auth_login.kiro_oauth_waiting')}
-            </div>
-          )}
-
           {/* AWS Builder ID 登录 */}
           <div className="connection-box" style={{ marginTop: 12 }}>
             <div className="label">{t('auth_login.kiro_builder_id_title')}</div>
             <div className="hint" style={{ marginTop: 4 }}>{t('auth_login.kiro_builder_id_hint')}</div>
             <div style={{ marginTop: 12 }}>
-              <Button
-                onClick={() => startKiroOAuth('builder-id')}
-                loading={kiroOAuth.polling && kiroOAuth.method === 'builder-id'}
-                disabled={kiroOAuth.polling && kiroOAuth.method !== 'builder-id'}
-              >
+              <Button onClick={() => openKiroOAuth('builder-id')}>
                 {t('auth_login.kiro_builder_id_button')}
               </Button>
             </div>
@@ -817,11 +706,7 @@ export function OAuthPage() {
               />
             </div>
             <div style={{ marginTop: 12 }}>
-              <Button
-                onClick={() => startKiroOAuth('idc')}
-                loading={kiroOAuth.polling && kiroOAuth.method === 'idc'}
-                disabled={kiroOAuth.polling && kiroOAuth.method !== 'idc'}
-              >
+              <Button onClick={() => openKiroOAuth('idc')}>
                 {t('auth_login.kiro_idc_button')}
               </Button>
             </div>
