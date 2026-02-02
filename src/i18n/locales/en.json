@@ -675,7 +675,14 @@
     "iflow_cookie_result_expired": "Expires At",
     "iflow_cookie_result_path": "Saved Path",
     "iflow_cookie_result_type": "Type",
-    "remote_access_disabled": "This login method is not available for remote access. Please access from localhost."
+    "remote_access_disabled": "This login method is not available for remote access. Please access from localhost.",
+    "kiro_oauth_title": "Kiro OAuth",
+    "kiro_oauth_hint": "Login to Kiro (CodeWhisperer) service through AWS SSO flow. Supports AWS Builder ID, AWS Identity Center (IDC) login, and token import from Kiro IDE.",
+    "kiro_oauth_button": "Open Kiro Login Page",
+    "kiro_oauth_methods_title": "Supported Login Methods",
+    "kiro_oauth_method_builder_id": "AWS Builder ID - Login with AWS Builder ID account",
+    "kiro_oauth_method_idc": "AWS Identity Center - Login with enterprise IDC account",
+    "kiro_oauth_method_import": "Token Import - Import RefreshToken from Kiro IDE"
   },
   "usage_stats": {
     "title": "Usage Statistics",

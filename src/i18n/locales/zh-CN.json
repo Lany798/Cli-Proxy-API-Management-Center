@@ -675,7 +675,14 @@
     "iflow_cookie_result_expired": "过期时间",
     "iflow_cookie_result_path": "保存路径",
     "iflow_cookie_result_type": "类型",
-    "remote_access_disabled": "远程访问不支持此登录方式，请从本地 (localhost) 访问"
+    "remote_access_disabled": "远程访问不支持此登录方式，请从本地 (localhost) 访问",
+    "kiro_oauth_title": "Kiro OAuth",
+    "kiro_oauth_hint": "通过 AWS SSO 流程登录 Kiro (CodeWhisperer) 服务，支持 AWS Builder ID、AWS Identity Center (IDC) 登录以及从 Kiro IDE 导入 Token。",
+    "kiro_oauth_button": "打开 Kiro 登录页面",
+    "kiro_oauth_methods_title": "支持的登录方式",
+    "kiro_oauth_method_builder_id": "AWS Builder ID - 使用 AWS Builder ID 账号登录",
+    "kiro_oauth_method_idc": "AWS Identity Center - 使用企业 IDC 账号登录",
+    "kiro_oauth_method_import": "Token 导入 - 从 Kiro IDE 导入 RefreshToken"
   },
   "usage_stats": {
     "title": "使用统计",

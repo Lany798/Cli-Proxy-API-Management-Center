@@ -15,6 +15,7 @@ import iconGemini from '@/assets/icons/gemini.svg';
 import iconQwen from '@/assets/icons/qwen.svg';
 import iconIflow from '@/assets/icons/iflow.svg';
 import iconVertex from '@/assets/icons/vertex.svg';
+import iconKiro from '@/assets/icons/kiro.svg';
 
 interface ProviderState {
   url?: string;
@@ -573,6 +574,31 @@ export function OAuthPage() {
               </div>
             </div>
           )}
+        </Card>
+
+        {/* Kiro OAuth 登录 */}
+        <Card
+          title={
+            <span className={styles.cardTitle}>
+              <img src={iconKiro} alt="" className={styles.cardTitleIcon} />
+              {t('auth_login.kiro_oauth_title')}
+            </span>
+          }
+          extra={
+            <Button onClick={() => window.open('/v0/oauth/kiro', '_blank', 'noopener,noreferrer')}>
+              {t('auth_login.kiro_oauth_button')}
+            </Button>
+          }
+        >
+          <div className="hint">{t('auth_login.kiro_oauth_hint')}</div>
+          <div className="connection-box" style={{ marginTop: 12 }}>
+            <div className="label">{t('auth_login.kiro_oauth_methods_title')}</div>
+            <ul style={{ margin: '8px 0 0 0', paddingLeft: 20, lineHeight: 1.8 }}>
+              <li>{t('auth_login.kiro_oauth_method_builder_id')}</li>
+              <li>{t('auth_login.kiro_oauth_method_idc')}</li>
+              <li>{t('auth_login.kiro_oauth_method_import')}</li>
+            </ul>
+          </div>
         </Card>
       </div>
     </div>
