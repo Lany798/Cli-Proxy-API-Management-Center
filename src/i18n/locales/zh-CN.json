@@ -682,7 +682,19 @@
     "kiro_oauth_methods_title": "支持的登录方式",
     "kiro_oauth_method_builder_id": "AWS Builder ID - 使用 AWS Builder ID 账号登录",
     "kiro_oauth_method_idc": "AWS Identity Center - 使用企业 IDC 账号登录",
-    "kiro_oauth_method_import": "Token 导入 - 从 Kiro IDE 导入 RefreshToken"
+    "kiro_oauth_method_import": "Token 导入 - 从 Kiro IDE 导入 RefreshToken",
+    "kiro_token_import_title": "Token 导入",
+    "kiro_token_import_hint": "从 Kiro IDE 复制 RefreshToken 并粘贴到下方输入框，点击导入按钮完成认证。",
+    "kiro_token_label": "RefreshToken",
+    "kiro_token_placeholder": "粘贴以 aorAAAAAG 开头的 RefreshToken",
+    "kiro_token_import_button": "导入 Token",
+    "kiro_token_required": "请先填写 RefreshToken",
+    "kiro_token_invalid_format": "Token 格式无效，应以 aorAAAAAG 开头",
+    "kiro_token_import_success": "Token 导入成功",
+    "kiro_token_import_failed": "Token 导入失败",
+    "kiro_token_result_title": "导入结果",
+    "kiro_token_result_file": "保存文件",
+    "kiro_token_result_message": "状态"
   },
   "usage_stats": {
     "title": "使用统计",

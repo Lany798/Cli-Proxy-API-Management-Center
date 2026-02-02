@@ -682,7 +682,19 @@
     "kiro_oauth_methods_title": "Supported Login Methods",
     "kiro_oauth_method_builder_id": "AWS Builder ID - Login with AWS Builder ID account",
     "kiro_oauth_method_idc": "AWS Identity Center - Login with enterprise IDC account",
-    "kiro_oauth_method_import": "Token Import - Import RefreshToken from Kiro IDE"
+    "kiro_oauth_method_import": "Token Import - Import RefreshToken from Kiro IDE",
+    "kiro_token_import_title": "Token Import",
+    "kiro_token_import_hint": "Copy the RefreshToken from Kiro IDE and paste it below, then click import to complete authentication.",
+    "kiro_token_label": "RefreshToken",
+    "kiro_token_placeholder": "Paste RefreshToken starting with aorAAAAAG",
+    "kiro_token_import_button": "Import Token",
+    "kiro_token_required": "Please enter the RefreshToken first",
+    "kiro_token_invalid_format": "Invalid token format, should start with aorAAAAAG",
+    "kiro_token_import_success": "Token imported successfully",
+    "kiro_token_import_failed": "Token import failed",
+    "kiro_token_result_title": "Import Result",
+    "kiro_token_result_file": "Saved File",
+    "kiro_token_result_message": "Status"
   },
   "usage_stats": {
     "title": "Usage Statistics",
