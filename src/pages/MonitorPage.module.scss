@@ -655,7 +655,7 @@
 // 虚拟滚动表格固定列宽
 .virtualTable {
   table-layout: fixed;
-  min-width: 1320px;
+  min-width: 1350px;
 
   th, td {
     overflow: hidden;
@@ -689,7 +689,7 @@
   // 总 Token
   th:nth-child(12), td:nth-child(12) { width: 65px; }
   // 时间
-  th:nth-child(13), td:nth-child(13) { width: 125px; }
+  th:nth-child(13), td:nth-child(13) { width: 155px; }
   // 操作
   th:nth-child(14), td:nth-child(14) { width: 54px; }
 
