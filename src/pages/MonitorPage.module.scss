@@ -103,6 +103,11 @@
   border: 1px solid var(--border-color);
   border-radius: $radius-lg;
   align-items: center;
+
+  @include mobile {
+    gap: 10px;
+    padding: 12px;
+  }
 }
 
 .filterGroup {
@@ -110,6 +115,11 @@
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+
+  @include mobile {
+    width: 100%;
+    gap: 8px;
+  }
 }
 
 .filterLabel {
@@ -117,6 +127,11 @@
   color: var(--text-secondary);
   font-weight: 500;
   white-space: nowrap;
+
+  @include mobile {
+    font-size: 12px;
+    width: 100%;
+  }
 }
 
 .timeButtons {
@@ -125,6 +140,17 @@
   background: var(--bg-tertiary);
   border-radius: $radius-full;
   padding: 4px;
+
+  @include mobile {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 }
 
 .timeButton {
@@ -137,6 +163,12 @@
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
+
+  @include mobile {
+    font-size: 12px;
+    padding: 6px 12px;
+    flex-shrink: 0;
+  }
 
   &:hover {
     color: var(--text-primary);
@@ -157,6 +189,13 @@
   color: var(--text-primary);
   font-size: 13px;
   min-width: 160px;
+
+  @include mobile {
+    font-size: 12px;
+    padding: 6px 10px;
+    min-width: 0;
+    width: 100%;
+  }
 
   &::placeholder {
     color: var(--text-tertiary);
@@ -303,10 +342,14 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  word-break: break-all;
 
   @include mobile {
     font-size: 10px;
     gap: 4px;
+    // 移动端允许换行显示
+    flex-direction: column;
+    gap: 2px;
   }
 }
 
@@ -500,6 +543,12 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+
+  @include mobile {
+    width: 100%;
+    max-height: 150px;
+    overflow-y: auto;
+  }
 }
 
 .legendItem {
@@ -509,6 +558,12 @@
   padding: 4px 8px;
   font-size: 12px;
   color: var(--text-secondary);
+
+  @include mobile {
+    font-size: 11px;
+    padding: 3px 6px;
+    gap: 6px;
+  }
 }
 
 .legendDot {
@@ -516,6 +571,11 @@
   height: 10px;
   border-radius: 50%;
   flex-shrink: 0;
+
+  @include mobile {
+    width: 8px;
+    height: 8px;
+  }
 }
 
 .legendName {
@@ -523,11 +583,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 0;
 }
 
 .legendValue {
   font-weight: 600;
   color: var(--text-primary);
+  flex-shrink: 0;
 }
 
 // 表格样式
@@ -563,6 +625,13 @@
 
     &:hover {
       background: var(--text-tertiary);
+    }
+  }
+
+  @include mobile {
+    // 移动端显示滚动条提示用户可以滚动
+    &::-webkit-scrollbar {
+      height: 4px;
     }
   }
 }
@@ -622,6 +691,26 @@
   th:nth-child(13), td:nth-child(13) { width: 125px; }
   // 操作
   th:nth-child(14), td:nth-child(14) { width: 54px; }
+
+  // 移动端优化：缩小列宽
+  @include mobile {
+    min-width: 1100px;
+
+    th:nth-child(1), td:nth-child(1) { width: 140px; }
+    th:nth-child(2), td:nth-child(2) { width: 70px; }
+    th:nth-child(3), td:nth-child(3) { width: 50px; }
+    th:nth-child(4), td:nth-child(4) { width: 110px; }
+    th:nth-child(5), td:nth-child(5) { width: 100px; }
+    th:nth-child(6), td:nth-child(6) { width: 50px; }
+    th:nth-child(7), td:nth-child(7) { width: 70px; }
+    th:nth-child(8), td:nth-child(8) { width: 50px; }
+    th:nth-child(9), td:nth-child(9) { width: 50px; }
+    th:nth-child(10), td:nth-child(10) { width: 45px; }
+    th:nth-child(11), td:nth-child(11) { width: 45px; }
+    th:nth-child(12), td:nth-child(12) { width: 55px; }
+    th:nth-child(13), td:nth-child(13) { width: 100px; }
+    th:nth-child(14), td:nth-child(14) { width: 50px; }
+  }
 }
 
 .table {
@@ -715,12 +804,21 @@
 .statusBars {
   display: flex;
   gap: 2px;
+
+  @include mobile {
+    gap: 1px;
+  }
 }
 
 .statusBar {
   width: 4px;
   height: 20px;
   border-radius: 2px;
+
+  @include mobile {
+    width: 3px;
+    height: 16px;
+  }
 
   &.success {
     background: var(--success-color, #22c55e);
@@ -738,6 +836,11 @@
   border-radius: $radius-full;
   font-size: 11px;
   font-weight: 600;
+
+  @include mobile {
+    padding: 2px 6px;
+    font-size: 10px;
+  }
 
   &.success {
     background: rgba(34, 197, 94, 0.15);
@@ -944,6 +1047,11 @@
   transition: all 0.2s ease;
   white-space: nowrap;
 
+  @include mobile {
+    padding: 2px 6px;
+    font-size: 10px;
+  }
+
   &:hover {
     background: rgba(239, 68, 68, 0.2);
     border-color: var(--danger-color, #ef4444);
@@ -960,6 +1068,11 @@
   color: var(--text-tertiary);
   font-size: 11px;
   white-space: nowrap;
+
+  @include mobile {
+    padding: 2px 6px;
+    font-size: 10px;
+  }
 }
 
 // 渠道名称显示
