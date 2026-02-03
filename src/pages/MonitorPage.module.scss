@@ -654,56 +654,20 @@
 
 // 虚拟滚动表格固定列宽
 .virtualTable {
-  table-layout: fixed;
+  table-layout: auto;
   min-width: 1320px;
 
   th, td {
-    overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
+    padding: 10px 12px;
   }
 
-  // 认证文件 (Auth)
-  th:nth-child(1), td:nth-child(1) { width: 180px; }
-  // API
-  th:nth-child(2), td:nth-child(2) { width: 90px; }
-  // 请求类型
-  th:nth-child(3), td:nth-child(3) { width: 60px; }
-  // 模型
-  th:nth-child(4), td:nth-child(4) { width: 140px; }
-  // 请求渠道
-  th:nth-child(5), td:nth-child(5) { width: 130px; }
-  // 状态
-  th:nth-child(6), td:nth-child(6) { width: 56px; }
-  // 最近请求状态
-  th:nth-child(7), td:nth-child(7) { width: 90px; }
-  // 成功率
-  th:nth-child(8), td:nth-child(8) { width: 60px; }
-  // 请求数
-  th:nth-child(9), td:nth-child(9) { width: 60px; }
-  // 输入
-  th:nth-child(10), td:nth-child(10) { width: 55px; }
-  // 输出
-  th:nth-child(11), td:nth-child(11) { width: 55px; }
-  // 总 Token
-  th:nth-child(12), td:nth-child(12) { width: 65px; }
-  // 时间
-  th:nth-child(13), td:nth-child(13) { width: 125px; }
-  // 操作
-  th:nth-child(14), td:nth-child(14) { width: 54px; }
-
-  // 移动端优化：取消固定列宽，内容完整显示
   @include mobile {
-    table-layout: auto;
-    min-width: auto;
+    min-width: 900px;
 
     th, td {
-      overflow: visible;
-      text-overflow: clip;
-      white-space: normal;
-      word-break: break-word;
-      min-width: auto;
-      width: auto !important;
+      padding: 8px 6px;
+      font-size: 11px;
     }
   }
 }
@@ -716,17 +680,17 @@
 
   @include mobile {
     font-size: 11px;
-    min-width: auto;
+    min-width: 500px;
   }
 
   th, td {
     padding: 10px 12px;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
 
     @include mobile {
       padding: 8px 6px;
-      word-break: break-word;
     }
   }
 
@@ -736,12 +700,7 @@
     font-weight: 600;
     color: var(--text-tertiary);
     background-color: var(--bg-secondary);
-    white-space: nowrap;
     z-index: 1;
-
-    @include mobile {
-      white-space: normal;
-    }
   }
 
   td {
