@@ -41,6 +41,7 @@ interface LogEntry {
   inputTokens: number;
   outputTokens: number;
   totalTokens: number;
+  authIndex: string;
 }
 
 interface ChannelModelRequest {
@@ -283,6 +284,7 @@ export function RequestLogs({ data, loading: parentLoading, providerMap, provide
             inputTokens: detail.tokens.input_tokens || 0,
             outputTokens: detail.tokens.output_tokens || 0,
             totalTokens: detail.tokens.total_tokens || 0,
+            authIndex: detail.auth_index || '',
           });
         });
       });
@@ -412,6 +414,9 @@ export function RequestLogs({ data, loading: parentLoading, providerMap, provide
 
     return (
       <>
+        <td title={entry.authIndex || '-'}>
+          {entry.authIndex || '-'}
+        </td>
         <td title={entry.apiKey}>
           {maskSecret(entry.apiKey)}
         </td>
@@ -580,6 +585,7 @@ export function RequestLogs({ data, loading: parentLoading, providerMap, provide
                 <table className={`${styles.table} ${styles.virtualTable}`}>
                   <thead>
                     <tr>
+                      <th>{t('monitor.logs.header_auth')}</th>
                       <th>{t('monitor.logs.header_api')}</th>
                       <th>{t('monitor.logs.header_request_type')}</th>
                       <th>{t('monitor.logs.header_model')}</th>
