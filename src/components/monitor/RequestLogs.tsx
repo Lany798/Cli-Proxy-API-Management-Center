@@ -2,7 +2,7 @@ import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Card } from '@/components/ui/Card';
-import { usageApi } from '@/services/api';
+import { usageApi, authFilesApi } from '@/services/api';
 import { useDisableModel } from '@/hooks';
 import { TimeRangeSelector, formatTimeRangeCaption, type TimeRange } from './TimeRangeSelector';
 import { DisableModelModal } from './DisableModelModal';
@@ -93,6 +93,9 @@ export function RequestLogs({ data, loading: parentLoading, providerMap, provide
   const [logLoading, setLogLoading] = useState(false);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
+  // 认证文件索引到名称的映射
+  const [authIndexMap, setAuthIndexMap] = useState<Record<string, string>>({});
+
   // 使用禁用模型 Hook
   const {
     disableState,
@@ -124,6 +127,28 @@ export function RequestLogs({ data, loading: parentLoading, providerMap, provide
       setIsFirstLoad(false);
     }
   }, [parentLoading, data]);
+
+  // 加载认证文件映射（authIndex -> 文件名）
+  const loadAuthIndexMap = useCallback(async () => {
+    try {
+      const response = await authFilesApi.list();
+      const files = response?.files || [];
+      const map: Record<string, string> = {};
+      files.forEach((file) => {
+        if (file.authIndex !== undefined && file.authIndex !== null) {
+          map[String(file.authIndex)] = file.name;
+        }
+      });
+      setAuthIndexMap(map);
+    } catch (err) {
+      console.warn('Failed to load auth files for index mapping:', err);
+    }
+  }, []);
+
+  // 初始加载认证文件映射
+  useEffect(() => {
+    loadAuthIndexMap();
+  }, [loadAuthIndexMap]);
 
   // 独立获取日志数据
   const fetchLogData = useCallback(async () => {
@@ -411,11 +436,13 @@ export function RequestLogs({ data, loading: parentLoading, providerMap, provide
     const stats = getStats(entry);
     const rateValue = parseFloat(stats.successRate);
     const disabled = isModelDisabled(entry.source, entry.model);
+    // 将 authIndex 映射为文件名
+    const authDisplayName = entry.authIndex ? (authIndexMap[entry.authIndex] || entry.authIndex) : '-';
 
     return (
       <>
-        <td title={entry.authIndex || '-'}>
-          {entry.authIndex || '-'}
+        <td title={authDisplayName}>
+          {authDisplayName}
         </td>
         <td title={entry.apiKey}>
           {maskSecret(entry.apiKey)}
