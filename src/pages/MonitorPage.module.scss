@@ -829,12 +829,12 @@
     padding: 10px 12px;
   }
 
-  // 嵌套表格支持横向滚动
+  // 嵌套表格支持横向滚动（失败来源分析展开详情有7列）
   .table {
-    min-width: 700px;
+    min-width: 800px;
 
     @include mobile {
-      min-width: 600px;
+      min-width: 750px;
     }
   }
 }
@@ -1028,11 +1028,13 @@
 // 渠道名称显示
 .channelName {
   display: inline;
+  word-break: break-all;
 }
 
 .channelSecret {
   color: var(--text-tertiary);
   font-size: 0.9em;
+  word-break: break-all;
 }
 
 // 已禁用模型行
@@ -1045,11 +1047,22 @@
   display: inline-block;
   padding: 2px 8px;
   margin-right: 4px;
+  margin-bottom: 2px;
   border-radius: $radius-md;
   background: rgba(239, 68, 68, 0.15);
   border: 1px solid rgba(239, 68, 68, 0.3);
   color: var(--danger-color, #ef4444);
   font-size: 11px;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @include mobile {
+    padding: 1px 6px;
+    font-size: 10px;
+    max-width: 90px;
+  }
 
   // 已移除模型的弱化样式
   &.modelDisabled {
@@ -1078,6 +1091,10 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  @include mobile {
+    width: 100%;
+  }
 }
 
 // 自定义日期选择器
